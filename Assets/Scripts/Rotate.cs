@@ -9,6 +9,7 @@ public class Rotate : MonoBehaviour
 
     void Update()
     {
+        // Rotate the object around the specified axis and angular speed
         transform.Rotate(rotationAxis, angularSpeed * Time.deltaTime);
     }
 }

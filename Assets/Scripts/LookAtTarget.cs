@@ -6,9 +6,14 @@ public class LookAtTarget : MonoBehaviour
 {
     public Transform target;
 
-    // Late update to ensure everything has moved already
-    void LateUpdate()
+    void Update()
     {
+        // A potential solution
+        //Vector3 direction = target.position - transform.position;
+        //Quaternion desiredRotation = Quaternion.LookRotation(direction, transform.up);
+        //transform.rotation = desiredRotation;
+
+        // Shorter solution for this use case
         transform.LookAt(target);
     }
 }
