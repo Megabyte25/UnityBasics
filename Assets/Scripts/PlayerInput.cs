@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Legacy input
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 

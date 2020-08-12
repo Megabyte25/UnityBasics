@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class LookAtTargetAdvanced : MonoBehaviour
+public class LookAtTargetSmoothly : MonoBehaviour
 {
     public Transform target;
     public float angularSpeed;
@@ -41,6 +39,15 @@ public class LookAtTargetAdvanced : MonoBehaviour
         //transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
 
         /*
+         * Attempt 3: Rotate and smoothly arrive at desired rotation
+         * "rotationSmoothing" is a value between 0 and 1
+         */
+
+        //Vector3 direction = target.position - transform.position;
+        //desiredRotation = Quaternion.LookRotation(direction, transform.up);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSmoothing);
+
+        /*
          * Attempt 4: Rotate at full speed, then slow down when the target angle is near, then stop completely when it is close enough
          * This produces the best result
          */
@@ -51,27 +58,13 @@ public class LookAtTargetAdvanced : MonoBehaviour
         if (angleDiff > slowAngle)
         {
             // Rotate at full speed
-            Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
         }
         else if (angleDiff > arrivalAngle)
         {
             // Rotate at slower speed
             float percentSpeed = angleDiff / (slowAngle - arrivalAngle);
-            Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * percentSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * percentSpeed * Time.deltaTime);
         }
-    }
-
-    // Use FixedUpdate because we are using Slerp.
-    // It changes the rotation by percentage rather than angles per second.
-    private void FixedUpdate()
-    {
-        /*
-         * Attempt 3: Rotate and smoothly arrive at desired rotation
-         * "rotationSmoothing" is a value between 0 and 1
-         */
-
-        //Vector3 direction = target.position - transform.position;
-        //desiredRotation = Quaternion.LookRotation(direction, transform.up);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSmoothing);
     }
 }
